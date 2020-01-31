@@ -1,0 +1,89 @@
+<% layout('../../admin/layouts/mainLayout') -%>
+
+  <% block('page_header',`
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Blog Categories </h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+            <li class="breadcrumb-item active">Blog Categories</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  `); -%>
+<div class="row">
+
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <a class="" href="/admin/blog-categories/create">Create New Category</a>
+        </div>
+        <div class="card-body">
+          <table id="blog_categories_table" class="table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th >Id</th>
+                    <th >Category Name</th>
+                    <th >Image</th>
+                    <th >Description</th>
+                    <th >Created At</th>
+                    <th style="width: 25%;">Action</th>
+                </tr>
+            </thead>
+        </table>
+        </div>
+        <!-- <div class="card-footer">Footer</div> -->
+      </div>
+    </div>
+
+
+
+</div>
+
+<% block('javascript',`
+<script>
+  $(function () {
+    // $("#blog_tag_table").DataTable();
+
+    var table = $('#blog_categories_table').DataTable( {
+        "ajax": "/admin/load-ajax-blog-categories",
+        "columns": [
+             {
+                 "className": 'details-control',
+                 "data":"id"
+             },
+             { "data": "category_name" },
+             {
+                "orderable": false,
+                "searchable": false,
+                "data": function (row) {
+                    return "<img src='/blog_category_images/"+row.image+"' >";
+                },
+
+             },
+             { "data": "description" },
+             { "data": "created_at" },
+             {
+                 "className": '',
+                 "orderable": false,
+                 "searchable": false,
+                 "data": null,
+                 "defaultContent": "<button class='btn btn-default'>View</button><button class='btn btn-success'>Edit</button><button  class='btn btn-danger delete-btn'>Delete</button>"
+             }
+         ],
+    });
+
+    $('#blog_categories_table tbody').on('click', 'button.delete-btn', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        alert('Delete id - '+ data[0] );
+    });
+
+  });
+</script>
+`); -%>

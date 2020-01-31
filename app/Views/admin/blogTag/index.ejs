@@ -1,0 +1,68 @@
+<% layout('../../admin/layouts/mainLayout') -%>
+
+  <% block('page_header',`
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Blog Tags </h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+            <li class="breadcrumb-item active">Blog Tags</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  `); -%>
+<div class="row">
+
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <a class="" href="/admin/blog-tags/create">Create New Tag</a>
+        </div>
+        <div class="card-body">
+          <table id="blog_tag_table" class="table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Id</th>
+                    <th style="width: 30%;">Tag Name</th>
+                    <th style="width: 30%;">Created At</th>
+                    <th style="width: 25%;">Action</th>
+                </tr>
+            </thead>
+        </table>
+        </div>
+        <!-- <div class="card-footer">Footer</div> -->
+      </div>
+    </div>
+
+
+
+</div>
+
+<% block('javascript',`
+<script>
+  $(function () {
+    // $("#blog_tag_table").DataTable();
+
+    var table = $('#blog_tag_table').DataTable( {
+        "ajax": "/admin/load-ajax-blog-tags",
+        "columnDefs": [{
+            "targets": -1,
+            "data": null,
+            "defaultContent": "<button class='btn btn-default'>View</button><button class='btn btn-success'>Edit</button><button  class='btn btn-danger delete-btn'>Delete</button>"
+        }]
+    });
+
+    $('#blog_tag_table tbody').on('click', 'button.delete-btn', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        alert('Delete id - '+ data[0] );
+    });
+
+  });
+</script>
+`); -%>

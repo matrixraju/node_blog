@@ -1,0 +1,90 @@
+ <% 
+ var url=req.originalUrl;
+ var segment_array=url.split('/');
+ 
+ %>
+ 
+ <!-- Main Sidebar Container -->
+ <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index3.html" class="brand-link">
+      <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Admin Panel</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">
+            <% if(req.user){ %>
+              <%= req.user.first_name +' '+ req.user.last_name  %>
+            <% }%>
+          
+           </a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="/admin/dashboard" class="nav-link <%= (segment_array.length>2 && segment_array[2]=='dashboard')?'active' :'' %> ">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+               Dashboard 
+                <span class="right badge badge-danger"></span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview <%= (segment_array.length>2 && _.includes(['blog-tags','blog-categories','blogs'],segment_array[2]) )?' menu-open' :'' %> ">
+            <a href="#" class="nav-link <%= (segment_array.length>2 && _.includes(['blog-tags','blog-categories','blogs'],segment_array[2]) )?' active' :'' %> ">
+              <i class="fas fa-rss"></i>
+              <p>
+                Blog Management
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/admin/blog-categories" class="nav-link <%= (segment_array.length>2 && segment_array[2]=='blog-categories')?'active' :'' %> ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Blog Categories</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/admin/blog-tags" class="nav-link <%= (segment_array.length>2 && segment_array[2]=='blog-tags')?'active' :'' %> ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Blog Tags</p>
+                </a>
+              </li>
+              <li class="nav-item <%= (segment_array.length>2 && segment_array[2]=='blogs')?'active' :'' %> ">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Blogs</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-envelope"></i>
+              <p>
+                Contact Messages
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

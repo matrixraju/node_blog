@@ -1,0 +1,6 @@
+
+/node_modules
+/app_backup
+/.env
+/public/log
+package-lock.json

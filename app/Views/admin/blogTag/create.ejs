@@ -1,0 +1,57 @@
+<% layout('../../admin/layouts/mainLayout') -%>
+
+  <% block('page_header',`
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Blog Tags </h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin/blog-tags">Blog Tags</a></li>
+            <li class="breadcrumb-item active">Create</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  `); -%>
+<div class="row">
+    <div class="col-md-12">
+      
+        <div class="card card-default">
+            <div class="card-header">
+              <h3 class="card-title">Create Tag</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form role="form" action="/admin/blog-tags/store" method="post">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="tage_name">Tag Name</label>
+                  <input type="text" name="tag_name" class="form-control" id="tage_name" placeholder="Enter Tag Name">
+                  <% if(validation_messages.length>0 && validation_messages[0].tag_name){ %>
+                    <span class="text-danger">
+                      <%= validation_messages[0].tag_name.message %>
+                    </span>
+                 <%} %>
+                </div>
+       
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+    </div>
+</div>
+
+<% block('javascript',`
+<script>
+
+</script>
+`); -%>

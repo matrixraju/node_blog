@@ -1,0 +1,81 @@
+<% layout('../../admin/layouts/mainLayout') -%>
+
+  <% block('page_header',`
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Create Category</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin/blog-categories">Blog Categories</a></li>
+            <li class="breadcrumb-item active">Create</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  `); -%>
+<div class="row">
+    <div class="col-md-12">
+      
+        <div class="card card-default">
+            <div class="card-header">
+              <h3 class="card-title">Create Category</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form role="form" action="/admin/blog-categories/store" method="post" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="category_name">Category Name</label>
+                  <input type="text" name="category_name" class="form-control" id="category_name" placeholder="Enter Category Name">
+                  <% if(validation_messages.length>0 && validation_messages[0].category_name){ %>
+                    <span class="text-danger">
+                      <%= validation_messages[0].category_name.message %>
+                    </span>
+                 <%} %>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+
+                    <textarea name="description" class="form-control" id="description" placeholder="Description"></textarea>
+
+                    <% if(validation_messages.length>0 && validation_messages[0].category_name){ %>
+                      <span class="text-danger">
+                        <%= validation_messages[0].description.message %>
+                      </span>
+                   <%} %>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Image</label>
+
+                    <input type="file" name="image" class="form-control" id="image" placeholder="Category Image">
+
+                    <% if(validation_messages.length>0 && validation_messages[0].image){ %>
+                      <span class="text-danger">
+                        <%= validation_messages[0].image.message %>
+                      </span>
+                   <%} %>
+                </div>
+       
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+    </div>
+</div>
+
+<% block('javascript',`
+<script>
+
+</script>
+`); -%>
