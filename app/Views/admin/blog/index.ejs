@@ -54,6 +54,8 @@
     // $("#blog_tag_table").DataTable();
 
     var table = $('#blogs_table').DataTable( {
+   
+        processing: true,
         responsive: true,
         "ajax": "/admin/load-ajax-blogs",
         "columns": [
@@ -61,14 +63,26 @@
                  "className": 'details-control',
                  "data":"id"
              },
-             { "data": "title" },
+             { "data": (row)=>{
+                  return row.title.substr(0,50);
+                } 
+             },
              {
-                "data":"short_description"
+                "data": (row)=>{
+                  return row.short_description.substr(0,100);
+                } 
              },
              { "data": "category.category_name" },
              { "data": function(row){
-                    return row.tags[0].tag_name;
-                } 
+                   if(row.tags.length){
+
+                    return Array.from(row.tags,ob=>ob.tag_name);
+   
+                   }else{
+                     return 'No Tags';
+                   }
+                    
+             } 
              },
              { "data": function(row){
                     return row.creator.first_name +" "+ row.creator.last_name;
@@ -79,16 +93,39 @@
                  "className": '',
                  "orderable": false,
                  "searchable": false,
-                 "data": null,
-                 "defaultContent": "<button class='btn btn-default'>View</button><button class='btn btn-success'>Edit</button><button  class='btn btn-danger delete-btn'>Delete</button>"
+                 "data": function (row) {
+                   return "<button class='btn btn-default'>View</button><a href='/admin/blogs/"+row.id+"/edit' class='btn btn-success'>Edit</a><button  class='btn btn-danger delete-btn'>Delete</button>";
+                 }
+                
              }
          ],
     });
 
-    $('#blog_categories_table tbody').on('click', 'button.delete-btn', function () {
+    $('#blogs_table tbody').on('click', 'button.delete-btn', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        alert('Delete id - '+ data[0] );
+    
+        var confirmation=confirm("Are you sure ? You wanna delete this post!");
+        
+        if(confirmation){
+            $.ajax({
+              type: 'DELETE',
+              url: '/admin/blogs/'+data.id +'/delete',
+              dataType: "json",
+              cache: false,
+              timeout: 5000,
+              success: function(data) {
+                  toastr.success('Blog successfully deleted.');
+                  table.ajax.reload();
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  toastr.error('Blog can be deleted.');
+              }
+            });
+        }
+
     });
+
+
 
   });
 </script>

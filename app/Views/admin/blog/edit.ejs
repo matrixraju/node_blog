@@ -1,0 +1,197 @@
+<% layout('../../admin/layouts/mainLayout') -%>
+
+  <% block('page_header',`
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Edit Blog</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin/blogs">Blogs</a></li>
+            <li class="breadcrumb-item active">Edit</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  `); -%>
+<div class="row">
+    <div class="col-md-12">
+      
+        <div class="card card-default">
+            <div class="card-header">
+              <h3 class="card-title">Edit Blog</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form role="form" action="/admin/blogs/store" method="post" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input type="text" name="title" value="<%= (old_values.length && old_values[0].title)? old_values[0].title :blog.title  %> " class="form-control" id="title" placeholder="Enter Title">
+                  <% if(validation_messages.length>0 && validation_messages[0].title){ %>
+                    <span class="text-danger">
+                      <%= validation_messages[0].title.message %>
+                    </span>
+                  <%} %>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Image</label>
+
+                    <input type="file" name="image"  class="form-control" id="image" placeholder="Category Image">
+
+                    <% if(validation_messages.length>0 && validation_messages[0].image){ %>
+                      <span class="text-danger">
+                        <%= validation_messages[0].image.message %>
+                      </span>
+                   <%} %>
+                </div>
+
+                <div class="form-group">
+                    <label for="short_description">Short Description</label>
+
+                    <textarea name="short_description" class="form-control" id="short_description" placeholder="Short Description"><%= (old_values.length && old_values[0].short_description)? old_values[0].short_description :blog.short_description  %></textarea>
+
+                    <% if(validation_messages.length>0 && validation_messages[0].short_description){ %>
+                      <span class="text-danger">
+                        <%= validation_messages[0].short_description.message %>
+                      </span>
+                   <%} %>
+                </div>
+                <div class="form-group">
+                    <%- blog.description %>
+                    <label for="description">Description</label>
+
+                    <textarea name="description" class="form-control" id="description" placeholder="Description"></textarea>
+
+                    <% if(validation_messages.length>0 && validation_messages[0].description){ %>
+                      <span class="text-danger">
+                        <%= validation_messages[0].description.message %>
+                      </span>
+                   <%} %>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+
+                    <select class="form-control" data-placeholder="Select a Category" id="category" 
+                    style="width: 100%;" name="category">
+                       <option value="">Select a Category</option>
+                        <% categories.forEach((category)=>{ %>
+                            <option value="<%= category.id %>" <%= (old_values.length && old_values[0].category && old_values[0].category==category.id)? 'selected' :''  %> > <%= category.category_name %></option>
+                        <% }) %>
+                    </select>
+                      
+
+                    <% if(validation_messages.length>0 && validation_messages[0].category){ %>
+                      <span class="text-danger">
+                        <%= validation_messages[0].category.message %>
+                      </span>
+                   <%} %>
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+
+                    <select multiple="multiple" data-placeholder="Select a Tags" class="form-control" id="tags" name="tags">
+                        <% tags.forEach((tag)=>{ %>
+                            <option value="<%= tag.id %>" <%= (old_values.length && old_values[0].tags && _.includes(old_values[0].tags,String(tag.id)) )? 'selected' :''  %>   ><%= tag.tag_name %></option>
+                        <% }) %>
+                     </select>
+
+                    <% if(validation_messages.length>0 && validation_messages[0].tags){ %>
+                      <span class="text-danger">
+                        <%= validation_messages[0].tags.message %>
+                      </span>
+                   <%} %>
+                </div>
+
+       
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+    </div>
+</div>
+
+<% if (blog) { %>
+ 
+    <script>
+       var data ="<%- description  %>";          
+    </script>
+<% } %>
+
+<% block('javascript',`
+
+<script>
+     
+    console.log(data);
+   $('#category').select2({
+      theme: 'bootstrap4'
+    });
+    $('#tags').select2({
+      theme: 'bootstrap4'
+    });
+
+  tinymce.init({
+  selector: 'textarea#description',
+  plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+  imagetools_cors_hosts: ['picsum.photos'],
+  menubar: 'file edit view insert format tools table',
+  toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+  toolbar_sticky: true,
+  autosave_ask_before_unload: true,
+  autosave_interval: "30s",
+  images_upload_url: '/admin/upload_blog_description_image',
+  autosave_prefix: "{path}{query}-{id}-",
+  autosave_restore_when_empty: false,
+  autosave_retention: "2m",
+  image_advtab: true,
+  content_css: [
+    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+    '//www.tiny.cloud/css/codepen.min.css'
+  ],
+ 
+  importcss_append: true,
+  height: 300,
+  file_picker_callback: function (callback, value, meta) {
+    /* Provide file and text for the link dialog */
+    if (meta.filetype === 'file') {
+      callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+    }
+
+    /* Provide image and alt text for the image dialog */
+    if (meta.filetype === 'image') {
+      callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+    }
+
+    /* Provide alternative source and posted for the media dialog */
+    if (meta.filetype === 'media') {
+      callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+    }
+  },
+  height: 300,
+  image_caption: true,
+  quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+  noneditable_noneditable_class: "mceNonEditable",
+  toolbar_drawer: 'sliding',
+  contextmenu: "link image imagetools table",
+  init_instance_callback : function(editor) {
+    editor.setContent( unescape(data) );
+  }
+ });
+
+
+ 
+
+
+
+
+</script>
+`); -%>

@@ -31,6 +31,8 @@ Router._group('/admin',function (Router) {
 });
 Router._group('/admin',function (Router) {
 
+   Router._post('/upload_blog_description_image',[Middlewares('AdminMiddleware')],'admin/EditorImageUploadController.upload_blog_description_image');
+
    Router._get('/dashboard',[Middlewares('AdminMiddleware')],'admin/DashboardController.index');
    //======= blog tag routes ====//
    Router._get('/blog-tags',[Middlewares('AdminMiddleware')],'admin/BlogTagController.index');
